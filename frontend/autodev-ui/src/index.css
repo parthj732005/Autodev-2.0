@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark is the default (and original) look — values match the previous
+     hardcoded hex exactly, so nothing changes visually until a user
+     explicitly switches themes. RGB triplets (not hex) so Tailwind's
+     rgb(var(...) / <alpha-value>) opacity modifiers keep working. */
+  :root,
+  :root[data-theme="dark"] {
+    --color-page: 10 10 10;         /* #0a0a0a */
+    --color-surface: 17 17 17;      /* #111111 */
+    --color-surface-2: 26 26 26;    /* #1a1a1a */
+    --color-surface-3: 34 34 34;    /* #222222 */
+    --color-border: 42 42 42;       /* #2a2a2a */
+
+    --slate-100: 241 245 249;       /* most prominent text */
+    --slate-200: 226 232 240;
+    --slate-300: 203 213 225;
+    --slate-400: 148 163 184;
+    --slate-500: 100 116 139;
+    --slate-600: 71 85 105;
+    --slate-700: 51 65 85;          /* most muted text */
+  }
+
+  /* Light theme: inverts the slate scale (100<->700-ish) so "100" still
+     means "most prominent" and "700" still means "most muted" — just
+     dark-on-light instead of light-on-dark. */
+  :root[data-theme="light"] {
+    --color-page: 248 250 252;      /* #f8fafc */
+    --color-surface: 255 255 255;   /* #ffffff */
+    --color-surface-2: 241 245 249; /* #f1f5f9 */
+    --color-surface-3: 226 232 240; /* #e2e8f0 */
+    --color-border: 226 232 240;    /* #e2e8f0 */
+
+    --slate-100: 15 23 42;          /* most prominent text, near-black */
+    --slate-200: 30 41 59;
+    --slate-300: 51 65 85;
+    --slate-400: 71 85 105;
+    --slate-500: 100 116 139;
+    --slate-600: 148 163 184;
+    --slate-700: 203 213 225;       /* most muted text, light gray */
+  }
+
+  html {
+    background-color: rgb(var(--color-page));
+    color: rgb(var(--slate-100));
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 150ms, color 150ms;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: rgb(var(--color-surface-2)); }
+  ::-webkit-scrollbar-thumb { background: rgb(var(--color-border)); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--slate-500)); }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium
+           transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply bg-transparent hover:bg-surface-3 text-slate-300 hover:text-white px-4 py-2
+           rounded-lg font-medium transition-colors duration-150;
+  }
+  .card {
+    @apply bg-surface border border-border rounded-xl p-4;
+  }
+  .input {
+    @apply bg-surface-2 border border-border rounded-lg px-3 py-2 text-slate-100
+           placeholder-slate-500 focus:outline-none focus:border-primary transition-colors w-full;
+  }
+}

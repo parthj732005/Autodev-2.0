@@ -1,0 +1,50 @@
+# Local development only. Does not affect how the existing FastAPI backend
+# or React frontend are started — those keep running exactly as before
+# (see README "Getting started"). This compose file only stands up the new
+# platform-service + its PostgreSQL database.
+#
+# Startup order for a full local stack:
+#   1. docker compose up -d          (postgres + platform-service)
+#   2. cd backend && python -m uvicorn app.main:app --reload
+#   3. cd frontend/autodev-ui && npm run dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-autodev_platform}
+      POSTGRES_USER: ${DB_USERNAME:-autodev}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-autodev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - autodev_platform_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-autodev} -d ${DB_NAME:-autodev_platform}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  platform-service:
+    build:
+      context: ./platform-service
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-autodev_platform}
+      DB_USERNAME: ${DB_USERNAME:-autodev}
+      DB_PASSWORD: ${DB_PASSWORD:-autodev}
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me-please-this-is-not-for-production-use-32bytes-min}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-60}
+      # Base64-encoded 32-byte (256-bit) AES key for encrypting provider API
+      # keys at rest. Dev-only default below — generate a real one for
+      # anything beyond local dev, e.g.: openssl rand -base64 32
+      AUTODEV_CREDENTIAL_ENCRYPTION_KEY: ${AUTODEV_CREDENTIAL_ENCRYPTION_KEY:-s0RjHUzD329Zk7wmpWVKKpFLNAiDQvBF83chS5N70Mw=}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  autodev_platform_pgdata:

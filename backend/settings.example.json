@@ -1,0 +1,14 @@
+{
+  "provider": "groq",
+  "openai_api_key": "",
+  "openai_model": "gpt-5.4-mini",
+  "anthropic_api_key": "",
+  "anthropic_model": "claude-sonnet-5",
+  "groq_api_key": "",
+  "groq_model": "llama-3.3-70b-versatile",
+  "huggingface_api_key": "",
+  "huggingface_model": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+  "ollama_base_url": "http://localhost:11434",
+  "ollama_model": "qwen2.5-coder:7b",
+  "output_directory": "C:\\Users\\you\\autodev-projects"
+}

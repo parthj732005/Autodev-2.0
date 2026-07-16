@@ -1,0 +1,41 @@
+# =====================
+# Secrets 
+# =====================
+.env
+backend/settings.json
+backend/.env
+backend/backend.log
+backend/app/logs/*.log
+
+# =====================
+# Python
+# =====================
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# =====================
+# Node / Frontend
+# =====================
+node_modules/
+dist/
+
+# =====================
+# Java / Maven (platform-service)
+# =====================
+platform-service/target/
+*.class
+
+# =====================
+# Editor / AI tooling
+# =====================
+.claude/
+.vscode/
+.idea/
+
+# =====================
+# OS
+# =====================
+.DS_Store
+Thumbs.db

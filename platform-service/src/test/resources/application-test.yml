@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:platform_test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+platform:
+  jwt:
+    secret: test-only-secret-not-for-production-use-minimum-32-bytes-long
+    expiration-minutes: 60
+  # Valid test-only 32-byte AES key (base64). Individual tests that need to
+  # verify missing/malformed-key failure modes override this per-test via
+  # @SpringBootTest(properties = ...).
+  credential-encryption-key: sEERC50Wu/tczhsVl7/Wnf3SdKshXqsairU20DZonDk=

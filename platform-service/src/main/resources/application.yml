@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: platform-service
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:autodev_platform}
+    username: ${DB_USERNAME:autodev}
+    password: ${DB_PASSWORD:autodev}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+server:
+  port: ${SERVER_PORT:8081}
+
+platform:
+  jwt:
+    # Example/dev-only default. Real deployments MUST override via JWT_SECRET env var.
+    secret: ${JWT_SECRET:dev-only-secret-change-me-please-this-is-not-for-production-use-32bytes-min}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+  # Base64-encoded 32-byte (256-bit) AES key for encrypting provider API keys
+  # at rest. No default here (unlike jwt.secret) — CredentialEncryptor fails
+  # safely, at the point of use, if this is missing or the wrong size/format,
+  # rather than silently falling back to plaintext.
+  credential-encryption-key: ${AUTODEV_CREDENTIAL_ENCRYPTION_KEY:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
